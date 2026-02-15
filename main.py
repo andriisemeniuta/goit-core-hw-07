@@ -6,6 +6,6 @@ def count_up(n):
 g = count_up(5)
 print(next(g))
 print(next(g))
-print(next(g))
+
 
 
