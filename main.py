@@ -123,4 +123,4 @@ class RandomVectors:
 vectors = RandomVectors(66, 444)
 
 for v in vectors:
-    print("FOR получил:", v)
+    print("FOR получил", v)
