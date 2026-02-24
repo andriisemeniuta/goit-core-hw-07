@@ -1,3 +1,6 @@
+from random import randrange
+
+
 class Point:
     def __init__(self, x, y):
         self.__x = None
@@ -50,50 +53,74 @@ class Vector:
         return self.coordinates.x, self.coordinates.y
 
     def __add__(self, vector):
-        new_x = self.coordinates.x + vector.coordinates.x
-        new_y = self.coordinates.y + vector.coordinates.y
-        new_point = Point(new_x, new_y)
-        return Vector(new_point)
-    
+        x = self.coordinates.x + vector.coordinates.x
+        y = self.coordinates.y + vector.coordinates.y
+        return Vector(Point(x, y))
+
     def __sub__(self, vector):
-        new_x = self.coordinates.x - vector.coordinates.x
-        new_y = self.coordinates.y - vector.coordinates.y
-        new_point = Point(new_x, new_y)
-        return Vector(new_point)
-        
+        x = self.coordinates.x - vector.coordinates.x
+        y = self.coordinates.y - vector.coordinates.y
+        return Vector(Point(x, y))
+
+    def __mul__(self, vector):
+        return (
+            self.coordinates.x * vector.coordinates.x
+            + self.coordinates.y * vector.coordinates.y
+        )
+
+    def len(self):
+        return (self.coordinates.x**2 + self.coordinates.y**2) ** 0.5
+
     def __str__(self):
         return f"Vector({self.coordinates.x},{self.coordinates.y})"
 
-vector1 = Vector(Point(1, 10))
-vector2 = Vector(Point(10, 10))
-vector33 = Vector(Point(33, 44))
+    def __eq__(self, vector):
+        return self.len() == vector.len()
 
-vector44 = vector33 + vector1
-vector3 = vector2 + vector1
-vector4 = vector2 - vector1
+    def __ne__(self, vector):
+        return self.len() != vector.len()
 
-print(vector44)
-# print(vector3)  # Vector(11,20)
-# print(vector4)  # Vector(9,0)
+    def __lt__(self, vector):
+        return self.len() < vector.len()
 
+    def __gt__(self, vector):
+        return self.len() > vector.len()
 
+    def __le__(self, vector):
+        return self.len() <= vector.len()
 
-
-
-
-
-
+    def __ge__(self, vector):
+        return self.len() >= vector.len()
 
 
+class Iterable:
+    def __init__(self, max_vectors, max_points):
+        self.current_index = 0
+        self.max_vectors = max_vectors
+
+        self.vectors = [
+            Vector(Point(randrange(0, max_points + 1), randrange(0, max_points + 1)))
+            for _ in range(max_vectors)
+        ]
+
+    def __next__(self):
+        if self.current_index < self.max_vectors:
+            vector = self.vectors[self.current_index]
+            self.current_index += 1
+            return vector
+        else:
+            raise StopIteration
 
 
+class RandomVectors:
+    def __init__(self, max_vectors=10, max_points=50):
+        self.max_vectors = max_vectors
+        self.max_points = max_points
 
+    def __iter__(self):
+        return Iterable(self.max_vectors, self.max_points)
+    
+vectors = RandomVectors(66, 444)
 
-
-
-
-
-
-
-
-
+for v in vectors:
+    print("FOR получил:", v)
